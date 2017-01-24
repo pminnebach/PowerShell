@@ -56,3 +56,5 @@ New-ModuleManifest @params
 
 # List all information from the module manifest.
 $Module | select *
+
+Write-Verbose "Module folder and samples created." -Verbose
