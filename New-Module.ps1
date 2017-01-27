@@ -77,9 +77,9 @@ New-Item -ItemType directory -Path $PathToCreate | Out-Null
 
 # Test if the path is actualty created
 if (Test-Path $PathToCreate)
-    {Write-Verbose "Created: $PathToCreate"}
+    { Write-Verbose "Created: $PathToCreate" }
 else
-    {Write-Error "Creation of folder went wrong"}
+    { Write-Error "Creation of folder went wrong" }
 
 # Create an empty .psm1 file which can be filled with your custom functions
 New-Item -ItemType file -Path "${PathToCreate}\${ModuleName}.psm1" | Out-Null
