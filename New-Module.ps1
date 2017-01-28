@@ -5,7 +5,6 @@ Param
     [string]$ModuleName,
 
     # Provide your own path instead of the default.
-    # Disabled for now untill
     [string]$Path,
     
     [Parameter(Mandatory=$true)]
@@ -113,7 +112,7 @@ else
     { Write-Error "Creation of .psm1 went wrong" }
 
 # List all information from the module manifest.
-if ((!$path)) 
+if (!$path)
 {
     $Module = get-module -ListAvailable -Name $ModuleName
     $ModulePath = $Module.ModuleBase
