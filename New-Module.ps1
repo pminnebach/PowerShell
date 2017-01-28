@@ -6,7 +6,7 @@ Param
 
     # Provide your own path instead of the default.
     # Disabled for now untill
-    # [string]$Path,
+    [string]$Path,
     
     [Parameter(Mandatory=$true)]
     [AllowNull()]
@@ -69,46 +69,55 @@ Write-Verbose "Default Mdule Path: $DefaultModulePath"
 # Set the path to create based on either the provided path or the default PSModulePath.
 if (!$Path)
 { 
-    $PathToCreate = "${DefaultModulePath}\${ModuleName}" 
+    $ModulePath = "${DefaultModulePath}\${ModuleName}" 
 }
 else
 { 
     $Path = $Path.TrimEnd('/')
-    $PathToCreate = "${Path}\${ModuleName}"
+    $ModulePath = "${Path}\${ModuleName}"
 }
 
 # Create the actual folder which is gonna contain the powershell scripts.
-New-Item -ItemType directory -Path $PathToCreate | Out-Null
+New-Item -ItemType directory -Path $ModulePath | Out-Null
 
 # Test if the path is actualty created
-if (Test-Path $PathToCreate)
-    { Write-Verbose "Created: $PathToCreate" }
+if (Test-Path $ModulePath)
+    { Write-Verbose "Created: $ModulePath" }
 else
     { Write-Error "Creation of folder went wrong" }
 
 # Create an empty .psm1 file which can be filled with your custom functions
-New-Item -ItemType file -Path "${PathToCreate}\${ModuleName}.psm1" | Out-Null
+$psm1 = "${ModulePath}\${ModuleName}.psm1"
+New-Item -ItemType file -Path $psm1 | Out-Null
 
+if (Test-Path $psm1)
+    { Write-Verbose "Created: $psm1" }
+else
+    { Write-Error "Creation of .psm1 went wrong" }
 
-$Module = get-module -ListAvailable -Name $ModuleName
-#$Module | select *
-
-$CreatedModulePath = $Module.ModuleBase
-Write-Verbose "ModuleBase: $CreatedModulePath"
-
+$psd1 = "${ModulePath}\${ModuleName}.psd1"
 $params = @{
     'Author' = $AuthorName
     'CompanyName' = $CompanyName
     'Description' = $Description
     'NestedModules' = $ModuleName
-    'Path' = "${CreatedModulePath}\${ModuleName}.psd1"
+    'Path' = $psd1
 }
 
 # Create the module manifest
 New-ModuleManifest @params
 
+if (Test-Path $psd1)
+    { Write-Verbose "Created: $psd1" }
+else
+    { Write-Error "Creation of .psm1 went wrong" }
+
 # List all information from the module manifest.
-$Module = get-module -ListAvailable -Name $ModuleName
-$Module | Select-Object *
+if ((!$path)) 
+{
+    $Module = get-module -ListAvailable -Name $ModuleName
+    $ModulePath = $Module.ModuleBase
+    Write-Verbose "ModuleBase: $ModulePath"
+}
 
 Write-Verbose "Module folder and samples created." -Verbose
