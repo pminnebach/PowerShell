@@ -5,7 +5,8 @@ Param
     [string]$ModuleName,
 
     # Provide your own path instead of the default.
-    [string]$NewModulePath,
+    # Disabled for now untill
+    # [string]$Path,
     
     [Parameter(Mandatory=$true)]
     [AllowNull()]
@@ -63,14 +64,18 @@ else
     Write-Host "Could not determine OS version"
 }
 
-
-Write-Verbose $DefaultModulePath
+Write-Verbose "Default Mdule Path: $DefaultModulePath"
 
 # Set the path to create based on either the provided path or the default PSModulePath.
-if (!$NewModulePath)
-    { $PathToCreate = "${DefaultModulePath}\${ModuleName}" }
-else 
-    { $PathToCreate = $NewModulePath }
+if (!$Path)
+{ 
+    $PathToCreate = "${DefaultModulePath}\${ModuleName}" 
+}
+else
+{ 
+    $Path = $Path.TrimEnd('/')
+    $PathToCreate = "${Path}\${ModuleName}"
+}
 
 # Create the actual folder which is gonna contain the powershell scripts.
 New-Item -ItemType directory -Path $PathToCreate | Out-Null
