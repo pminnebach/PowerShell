@@ -14,4 +14,14 @@
 */*.pvk
 */**/*.pvk
 
+*.zip
+*/*.zip
+*/**/*.zip
+
+vbrzipconfig.json
+*/vbrzipconfig.json
+*/**/vbrzipconfig.json
+
 /Profile
+/OLD
+/Transcript
