@@ -10,6 +10,8 @@
 
 ### Get-VmMacAddress.ps1
 
+This function gets the mac address from a VM running on an esxi host. The output is structured so that i can easily be piped in the DHCP cmdlets from Windows Server to create static leases.
+
 ```powershell
 PS C:\Users\pminnebach> Get-VM | Get-VmMacAddress
 
